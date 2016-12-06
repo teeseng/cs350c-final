@@ -1,0 +1,98 @@
+-n t0 ... 
+pass @  421 cycles	91 instrs	CPI=4.626374
+-n test1 ... 
+pass @  421 cycles	91 instrs	CPI=4.626374
+-n test2 ... 
+pass @  168 cycles	49 instrs	CPI=3.428571
+-n test3 ... 
+pass @  228 cycles	35 instrs	CPI=6.514286
+-n test4 ... 
+pass @  152 cycles	23 instrs	CPI=6.608696
+-n test5 ... 
+pass @  636 cycles	135 instrs	CPI=4.711111
+-n test6 ... 
+pass @  106 cycles	32 instrs	CPI=3.312500
+-n test7 ... 
+pass @  243 cycles	49 instrs	CPI=4.959184
+-n test8 ... 
+pass @   46 cycles	12 instrs	CPI=3.833333
+-n test9 ... 
+pass @ 1638 cycles	635 instrs	CPI=2.579528
+-n testa ... 
+pass @  208 cycles	32 instrs	CPI=6.500000
+-n testb ... 
+pass @  178 cycles	54 instrs	CPI=3.296296
+-n testc ... 
+pass @  383 cycles	80 instrs	CPI=4.787500
+-n testd ... 
+pass @  104 cycles	17 instrs	CPI=6.117647
+-n teste ... 
+pass @  123 cycles	18 instrs	CPI=6.833333
+-n testf ... 
+pass @  123 cycles	18 instrs	CPI=6.833333
+-n testg ... 
+pass @   19 cycles	4 instrs	CPI=4.750000
+-n testh ... 
+pass @   26 cycles	5 instrs	CPI=5.200000
+-n testi ... 
+fail
+
+
+----------- expected ----------
+#reg[ 0] <= 0x0000
+#reg[ 1] <= 0x0011
+#reg[ 2] <= 0x0022
+#reg[ 3] <= 0x0033
+#reg[ 4] <= 0x0044
+#reg[ 5] <= 0x0055
+#reg[ 6] <= 0x0066
+#reg[ 7] <= 0x0077
+#mem[0080] <= 0000
+#reg[ 8] <= 0x0000
+#mem[0080] <= 0011
+#reg[ 9] <= 0x0011
+#mem[0080] <= 0022
+#reg[10] <= 0x0022
+#mem[0080] <= 0033
+#reg[11] <= 0x0033
+#mem[0080] <= 0044
+#reg[12] <= 0x0044
+#mem[0080] <= 0055
+#reg[13] <= 0x0055
+#mem[0080] <= 0066
+#reg[14] <= 0x0066
+#mem[0080] <= 0077
+#reg[15] <= 0x0077
+
+
+------------- found ----------
+#reg[ 0] <= 0x0000
+#reg[ 1] <= 0x0011
+#reg[ 2] <= 0x0022
+#reg[ 3] <= 0x0033
+#reg[ 4] <= 0x0044
+#reg[ 5] <= 0x0055
+#mem[0080] <= 0000
+#reg[ 6] <= 0x0066
+#reg[ 7] <= 0x0077
+#mem[0080] <= 0011
+#reg[ 8] <= 0x0000
+#mem[0080] <= 0022
+#reg[ 9] <= 0x0011
+#mem[0080] <= 0033
+#reg[10] <= 0x0022
+#mem[0080] <= 0044
+#reg[11] <= 0x0033
+#mem[0080] <= 0055
+#reg[12] <= 0x0044
+#mem[0080] <= 0066
+#reg[13] <= 0x0055
+#mem[0080] <= 0077
+#reg[14] <= 0x0066
+#reg[15] <= 0x0077
+-n testj ... 
+pass @   27 cycles	6 instrs	CPI=4.500000
+-n testk ... 
+pass @   26 cycles	6 instrs	CPI=4.333333
+-n testl ... 
+pass @  867 cycles	168 instrs	CPI=5.160714
