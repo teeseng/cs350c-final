@@ -243,7 +243,7 @@ module main();
                     || r0_inst[15:12] == 4'b0110
                     || r0_inst[15:12] == 4'b0111);
 
-    // global pattern 
+    // global pattern
     reg [7:0]jmp_pattern = 0;
     reg [7:0] history = 0;
 
@@ -254,12 +254,13 @@ module main();
     // 3
     reg [1:0]meta_predictor[0:7];
 
-    wire d_global_predictor = (meta_predictor[d_pc%8]  == 3); 
+    wire d_global_predictor = (meta_predictor[d_pc%8]  == 2);
+    wire x_global_predictor = (meta_predictor[x_pc%8]  == 2);
 
     // registers
     regs rf(clk,
         ren, r0_ra, va,
-        ren, r0_rb, vb, 
+        ren, r0_rb, vb,
         wen, w_rt, w_res);
 
     counter ctr(w_halt,clk,f_v,);
@@ -370,9 +371,6 @@ module main();
                 //stall_ctr <= 0;
             end
             if (d_is_x_jmp) begin
-                // if(local_states[d_pc%8] > `F_ST) begin
-                //          
-                // end
                 if ((d_global_predictor) ? jmp_pattern[history] : local_states[d_pc%8] > `F_ST) begin
                 // if ((history[d_pc%32] & last_was_jump[d_pc%32])
                 //     | (~history[d_pc%32] & last_was_cont[d_pc%32])) begin
@@ -417,19 +415,28 @@ module main();
                 // we should have already jumped so only need to do this
                 // if we predicted wrong
                 // history[x_pc%32] <= 1;
-                history <= (history << 1) & 1'b1;
+                meta_predictor[x_pc%8] <=
+                    meta_predictor[x_pc%8]
+                    + ((meta_predictor[x_pc%8] == 3) ? 0 : 1);
+                if (x_global_predictor) begin
+                    history <= (history << 1) & 1'b1;
                 // if (predictor_v[x_pc % 32]
                 //     & ((history[x_pc%32] & ~last_was_jump[x_pc%32])
                 //         | (~history[x_pc%32] & ~last_was_cont[x_pc%32]))) begin
-                local_states[x_pc%8] <=
-                    local_states[x_pc%8]
-                    + ((local_states[x_pc%8] == 3) ? 0 : 1);
-                if (~jmp_pattern[history] | local_states[x_pc%8] < 2) begin
+                end
+                else begin
+                    local_states[x_pc%8] <=
+                        local_states[x_pc%8]
+                        + ((local_states[x_pc%8] == 3) ? 0 : 1);
+                end
+                if (x_global_predictor ? ~jmp_pattern[history] : local_states[x_pc%8] < 2) begin
                     // guessed wrong
                     $display("guessed wrong\n");
                     predictor_wrong <= predictor_wrong + 1;
 
-                    jmp_pattern[history] <= 0;
+                    if (x_global_predictor) begin
+                        jmp_pattern[history] <= 1;
+                    end
 
                     pc <= x_pc + x_d;
 
@@ -466,16 +473,22 @@ module main();
             end
             else if (x_is_jump) begin
                 // we jumped but we shouldn't have
-                history <= (history << 1) & 1'b0;
-                local_states[x_pc%8] <=
-                    local_states[x_pc%8]
-                    - ((local_states[x_pc%8] == 0) ? 0 : 1);
-                if (jmp_pattern[history] | local_states[x_pc%8] >= 2) begin
+                if (x_global_predictor) begin
+                    history <= (history << 1) & 1'b0;
+                end
+                else begin
+                    local_states[x_pc%8] <=
+                        local_states[x_pc%8]
+                        - ((local_states[x_pc%8] == 0) ? 0 : 1);
+                end
+                if (x_global_predictor ? jmp_pattern[history] : local_states[x_pc%8] >= 2) begin
                 // if (predictor_v[x_pc % 32]
                 //     & ((history[x_pc%32] & last_was_jump[x_pc%32])
                 //         | (~history[x_pc%32] & last_was_cont[x_pc%32]))) begin
                 //
-                    jmp_pattern[history] <= 0;
+                    if (x_global_predictor) begin
+                        jmp_pattern[history] <= 0;
+                    end
 
                     $display("guessed wrong\n");
                     predictor_wrong <= predictor_wrong + 1;

@@ -1,0 +1,11 @@
+WARNING: mem.v:17: $readmemh: Standard inconsistency, following 1364-2005.
+WARNING: mem.v:17: $readmemh(mem.hex): Not enough words in the file for the requested range [0:1023].
+VCD info: dumpfile cpu.vcd opened for output.
+#reg[ 0] <= 0x00ff
+#reg[ 1] <= 0x00ff
+guessed wrong
+
+#mem[0081] <= 00ff
+@   27 cycles	6 instrs	CPI=4.500000
+         0 /          1
+

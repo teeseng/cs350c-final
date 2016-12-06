@@ -1,0 +1,108 @@
+WARNING: mem.v:17: $readmemh: Standard inconsistency, following 1364-2005.
+WARNING: mem.v:17: $readmemh(mem.hex): Not enough words in the file for the requested range [0:1023].
+VCD info: dumpfile cpu.vcd opened for output.
+#reg[ 0] <= 0x0000
+#reg[ 1] <= 0x0001
+#reg[ 2] <= 0x0020
+guessed right
+
+#reg[ 0] <= 0x0001
+guessed right
+
+#reg[ 0] <= 0x0002
+guessed right
+
+#reg[ 0] <= 0x0003
+guessed right
+
+#reg[ 0] <= 0x0004
+guessed right
+
+#reg[ 0] <= 0x0005
+guessed right
+
+#reg[ 0] <= 0x0006
+guessed right
+
+#reg[ 0] <= 0x0007
+guessed right
+
+#reg[ 0] <= 0x0008
+guessed right
+
+#reg[ 0] <= 0x0009
+guessed right
+
+#reg[ 0] <= 0x000a
+guessed right
+
+#reg[ 0] <= 0x000b
+guessed right
+
+#reg[ 0] <= 0x000c
+guessed right
+
+#reg[ 0] <= 0x000d
+guessed right
+
+#reg[ 0] <= 0x000e
+guessed right
+
+#reg[ 0] <= 0x000f
+guessed right
+
+#reg[ 0] <= 0x0010
+guessed right
+
+#reg[ 0] <= 0x0011
+guessed right
+
+#reg[ 0] <= 0x0012
+guessed right
+
+#reg[ 0] <= 0x0013
+guessed right
+
+#reg[ 0] <= 0x0014
+guessed right
+
+#reg[ 0] <= 0x0015
+guessed right
+
+#reg[ 0] <= 0x0016
+guessed right
+
+#reg[ 0] <= 0x0017
+guessed right
+
+#reg[ 0] <= 0x0018
+guessed right
+
+#reg[ 0] <= 0x0019
+guessed right
+
+#reg[ 0] <= 0x001a
+guessed right
+
+#reg[ 0] <= 0x001b
+guessed right
+
+#reg[ 0] <= 0x001c
+guessed right
+
+#reg[ 0] <= 0x001d
+guessed right
+
+#reg[ 0] <= 0x001e
+guessed right
+
+#reg[ 0] <= 0x001f
+guessed right
+
+#reg[ 0] <= 0x0020
+guessed wrong
+
+        32 /         33
+
+@  636 cycles	135 instrs	CPI=4.711111
+#reg[ 0] <= 0x0040

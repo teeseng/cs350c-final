@@ -1,0 +1,141 @@
+WARNING: mem.v:17: $readmemh: Standard inconsistency, following 1364-2005.
+WARNING: mem.v:17: $readmemh(mem.hex): Not enough words in the file for the requested range [0:1023].
+VCD info: dumpfile cpu.vcd opened for output.
+#reg[ 0] <= 0x0000
+#mem[0099] <= 0000
+#reg[ 1] <= 0x0001
+#reg[ 2] <= 0x0020
+guessed right
+
+#reg[ 0] <= 0x0001
+#mem[0099] <= 0001
+guessed right
+
+#reg[ 0] <= 0x0002
+#mem[0099] <= 0002
+guessed right
+
+#reg[ 0] <= 0x0003
+#mem[0099] <= 0003
+guessed right
+
+#reg[ 0] <= 0x0004
+#mem[0099] <= 0004
+guessed right
+
+#reg[ 0] <= 0x0005
+#mem[0099] <= 0005
+guessed right
+
+#reg[ 0] <= 0x0006
+#mem[0099] <= 0006
+guessed right
+
+#reg[ 0] <= 0x0007
+#mem[0099] <= 0007
+guessed right
+
+#reg[ 0] <= 0x0008
+#mem[0099] <= 0008
+guessed right
+
+#reg[ 0] <= 0x0009
+#mem[0099] <= 0009
+guessed right
+
+#reg[ 0] <= 0x000a
+#mem[0099] <= 000a
+guessed right
+
+#reg[ 0] <= 0x000b
+#mem[0099] <= 000b
+guessed right
+
+#reg[ 0] <= 0x000c
+#mem[0099] <= 000c
+guessed right
+
+#reg[ 0] <= 0x000d
+#mem[0099] <= 000d
+guessed right
+
+#reg[ 0] <= 0x000e
+#mem[0099] <= 000e
+guessed right
+
+#reg[ 0] <= 0x000f
+#mem[0099] <= 000f
+guessed right
+
+#reg[ 0] <= 0x0010
+#mem[0099] <= 0010
+guessed right
+
+#reg[ 0] <= 0x0011
+#mem[0099] <= 0011
+guessed right
+
+#reg[ 0] <= 0x0012
+#mem[0099] <= 0012
+guessed right
+
+#reg[ 0] <= 0x0013
+#mem[0099] <= 0013
+guessed right
+
+#reg[ 0] <= 0x0014
+#mem[0099] <= 0014
+guessed right
+
+#reg[ 0] <= 0x0015
+#mem[0099] <= 0015
+guessed right
+
+#reg[ 0] <= 0x0016
+#mem[0099] <= 0016
+guessed right
+
+#reg[ 0] <= 0x0017
+#mem[0099] <= 0017
+guessed right
+
+#reg[ 0] <= 0x0018
+#mem[0099] <= 0018
+guessed right
+
+#reg[ 0] <= 0x0019
+#mem[0099] <= 0019
+guessed right
+
+#reg[ 0] <= 0x001a
+#mem[0099] <= 001a
+guessed right
+
+#reg[ 0] <= 0x001b
+#mem[0099] <= 001b
+guessed right
+
+#reg[ 0] <= 0x001c
+#mem[0099] <= 001c
+guessed right
+
+#reg[ 0] <= 0x001d
+#mem[0099] <= 001d
+guessed right
+
+#reg[ 0] <= 0x001e
+#mem[0099] <= 001e
+guessed right
+
+#reg[ 0] <= 0x001f
+#mem[0099] <= 001f
+guessed right
+
+#reg[ 0] <= 0x0020
+#mem[0099] <= 0020
+guessed wrong
+
+#mem[00aa] <= 0020
+@  867 cycles	168 instrs	CPI=5.160714
+        32 /         33
+

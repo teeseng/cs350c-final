@@ -39,13 +39,8 @@ reg [1:0] curr_count = 2;
 reg [15:0] correct_curr_pc;
 
 // Branch Predictor [Kevin]
-reg [31:0]last_was_jump = 0;
-reg [31:0]last_was_cont = 0;
-reg [31:0]history = 0;
-reg [31:0]predictor_v = 0;
-reg [31:0]predictor_right = 0;
-reg [31:0]predictor_wrong = 0;
-
+reg [7:0] jmp_pattern;
+reg [7:0] history;
 
 ////////				////////				////////
 // F0 //				// F0 //				// F0 //

@@ -28,6 +28,10 @@ module main();
 		predict[3][18:0] = 16'h0000;
 	end
 
+	reg [15:0] r_inst;
+	reg [15:0] r_pc;
+	reg r_v = 0;
+
 	// clock
 	wire clk;
 	clock c0(clk);
@@ -239,10 +243,6 @@ module main();
 
 	wire r_valid = r_inst[15:12] !== 4'bxxxx;
 
-	reg [15:0] r_inst;
-	reg [15:0] r_pc;
-	reg r_v = 0;
-
 	// Register Read Logic
 	wire using_reg = (d_stall_c == 1) ?
 			(d_inst[15:12] == `ADD | d_inst[15:12] == `LDR | d_inst[15:12] == `JEQ | d_inst[15:12] == `ST) :
@@ -332,138 +332,138 @@ module main();
 
 
 	////////				////////				////////
-	// X0 //				// X0 //				// X0 //
-	////////				////////				////////
+    // X0 //				// X0 //				// X0 //
+    ////////				////////				////////
 
-	wire x_valid = x_inst[15:0] !== 16'hxxxx;
+    wire x_valid = x_inst[15:0] !== 16'hxxxx;
 
-	reg [15:0] x_inst;
-	reg [15:0] x_pc;
-	reg x_v = 0;
+    reg [15:0] x_inst;
+    reg [15:0] x_pc;
+    reg x_v = 0;
 
-	// Jump Logic
-	reg [15:0] x_data0;
-	reg [15:0] x_data1;
+    // Jump Logic
+    reg [15:0] x_data0;
+    reg [15:0] x_data1;
 
-	wire x_jmp = x_v & x_valid & (x_inst[15:12] == `JMP & (x_inst[11:0] != x_pc + 1));
-	wire x_jeq = x_v & x_valid & x_inst[15:12] == `JEQ & x_inst[3:0] != 1 & x_data0 == x_data1;
+    wire x_jmp = x_v & x_valid & (x_inst[15:12] == `JMP & (x_inst[11:0] != x_pc + 1));
+    wire x_jeq = x_v & x_valid & x_inst[15:12] == `JEQ & x_inst[3:0] != 1 & x_data0 == x_data1;
 
-	reg [11:0] jmp_pc;
-	reg [11:0] jeq_pc;
-	reg is_jmp = 0;
-	reg is_jeq = 0;
+    reg [11:0] jmp_pc;
+    reg [11:0] jeq_pc;
+    reg is_jmp = 0;
+    reg is_jeq = 0;
 
-	always @(posedge clk) begin
+    always @(posedge clk) begin
 
-		if (x_v) begin
-			m0_inst <= x_inst;
-			m0_v <= x_v;
-			m0_pc <= x_pc;
+        if (x_v) begin
+            m0_inst <= x_inst;
+            m0_v <= x_v;
+            m0_pc <= x_pc;
 
-			if (x_jeq) begin
-				jeq_pc <= x_pc;
-				is_jeq <= 1;
-			end else if (x_jmp) begin
-				jmp_pc <= x_pc;
-				is_jmp <= 1;
-			end else if (x_inst[15:12] == `MOV)
-				m0_xval <= x_inst[11:4];
-			else if (x_inst[15:12] == `LD)
-				memIn <= x_inst[11:4];
-			else if (x_inst[15:12] == `LDR)
-				memIn <= x_data0 + x_data1;
-			else if (x_inst[15:12] == `ADD)
-				m0_xval <= x_data0 + x_data1;
-			else if (x_inst[15:12] == `ST)
-				m0_xval <= x_data1;
-		end
+            if (x_jeq) begin
+                jeq_pc <= x_pc;
+                is_jeq <= 1;
+            end else if (x_jmp) begin
+                jmp_pc <= x_pc;
+                is_jmp <= 1;
+            end else if (x_inst[15:12] == `MOV)
+                m0_xval <= x_inst[11:4];
+            else if (x_inst[15:12] == `LD)
+                memIn <= x_inst[11:4];
+            else if (x_inst[15:12] == `LDR)
+                memIn <= x_data0 + x_data1;
+            else if (x_inst[15:12] == `ADD)
+                m0_xval <= x_data0 + x_data1;
+            else if (x_inst[15:12] == `ST)
+                m0_xval <= x_data1;
+        end
 
-	end
-
-
-	////////				////////				////////
-	// M0 //				// M0 //				// M0 //
-	////////				////////				////////
-
-	reg [15:0] m0_inst;
-	reg [15:0] m0_pc;
-	reg [15:0] m0_xval;
-	reg m0_v = 0;
-
-	always @(posedge clk) begin
-
-		if (m0_v) begin
-			m1_inst <= m0_inst;
-			m1_v <= m0_v;
-			m1_pc <= m0_pc;
-			m1_xval <= m0_xval;
-
-			if (jmp_pc == m0_pc) is_jmp <= 0;
-		end
-
-	end
+    end
 
 
-	////////				////////				////////
-	// M1 //				// M1 //				// M1 //
-	////////				////////				////////
+    ////////				////////				////////
+    // M0 //				// M0 //				// M0 //
+    ////////				////////				////////
 
-	reg [15:0] m1_inst;
-	reg [15:0] m1_pc;
-	reg [15:0] m1_xval;
-	reg m1_v = 0;
+    reg [15:0] m0_inst;
+    reg [15:0] m0_pc;
+    reg [15:0] m0_xval;
+    reg m0_v = 0;
 
-	always @(posedge clk) begin
+    always @(posedge clk) begin
 
-		if (m1_v) begin
-			wb_inst <= m1_inst;
-			wb_v <= m1_v;
-			wb_pc <= m1_pc;
-			wb_xval <= m1_xval;
+        if (m0_v) begin
+            m1_inst <= m0_inst;
+            m1_v <= m0_v;
+            m1_pc <= m0_pc;
+            m1_xval <= m0_xval;
 
-			if (jeq_pc == m1_pc) is_jeq <= 0;
-		end
+            if (jmp_pc == m0_pc) is_jmp <= 0;
+        end
 
-	end
+end
 
 
-	////////				////////				////////
-	// WB //				// WB //				// WB //
-	////////				////////				////////
+////////				////////				////////
+// M1 //				// M1 //				// M1 //
+////////				////////				////////
 
-	wire wb_valid = wb_inst[15:0] !== 4'bxxxx;
+reg [15:0] m1_inst;
+reg [15:0] m1_pc;
+reg [15:0] m1_xval;
+reg m1_v = 0;
 
-	reg [15:0] wb_inst;
-	reg [15:0] wb_pc;
-	reg [15:0] wb_xval;
-	reg wb_v = 0;
+always @(posedge clk) begin
 
-	always @(posedge clk) begin
+    if (m1_v) begin
+        wb_inst <= m1_inst;
+        wb_v <= m1_v;
+        wb_pc <= m1_pc;
+        wb_xval <= m1_xval;
 
-		wen_delay <= wb_inst[15:12] == `ST & wb_inst[15:12] != `HLT & wb_v &
-				(~d_past_stall | d_stall_c == 1) & wb_valid;
-		waddr_mem <= wb_inst[7:0];
-		wdata_mem <= wb_xval;
+        if (jeq_pc == m1_pc) is_jeq <= 0;
+    end
 
-		if (wb_pc != m1_pc)
-			d_past_stall <= 0;
+    end
 
-		if (wb_v) begin
-			if (wb_inst[15:12] == `HLT)
-				halt <= 1;
 
-			if (wb_men) begin
-				if (inst_cache[0][31:16] == wb_pc) inst_cache[0][31:16] <= 16'hffff;
-				if (inst_cache[1][31:16] == wb_pc) inst_cache[1][31:16] <= 16'hffff;
-				if (inst_cache[2][31:16] == wb_pc) inst_cache[2][31:16] <= 16'hffff;
-				if (inst_cache[3][31:16] == wb_pc) inst_cache[3][31:16] <= 16'hffff;
-				if (inst_cache[4][31:16] == wb_pc) inst_cache[4][31:16] <= 16'hffff;
-				if (inst_cache[5][31:16] == wb_pc) inst_cache[5][31:16] <= 16'hffff;
-				if (inst_cache[6][31:16] == wb_pc) inst_cache[6][31:16] <= 16'hffff;
-			end
+    ////////				////////				////////
+    // WB //				// WB //				// WB //
+    ////////				////////				////////
 
-		end
+    wire wb_valid = wb_inst[15:0] !== 4'bxxxx;
 
-	end
+    reg [15:0] wb_inst;
+    reg [15:0] wb_pc;
+    reg [15:0] wb_xval;
+    reg wb_v = 0;
+
+    always @(posedge clk) begin
+
+        wen_delay <= wb_inst[15:12] == `ST & wb_inst[15:12] != `HLT & wb_v &
+            (~d_past_stall | d_stall_c == 1) & wb_valid;
+        waddr_mem <= wb_inst[7:0];
+        wdata_mem <= wb_xval;
+
+        if (wb_pc != m1_pc)
+            d_past_stall <= 0;
+
+        if (wb_v) begin
+            if (wb_inst[15:12] == `HLT)
+                halt <= 1;
+
+            if (wb_men) begin
+                if (inst_cache[0][31:16] == wb_pc) inst_cache[0][31:16] <= 16'hffff;
+                if (inst_cache[1][31:16] == wb_pc) inst_cache[1][31:16] <= 16'hffff;
+                if (inst_cache[2][31:16] == wb_pc) inst_cache[2][31:16] <= 16'hffff;
+                if (inst_cache[3][31:16] == wb_pc) inst_cache[3][31:16] <= 16'hffff;
+                if (inst_cache[4][31:16] == wb_pc) inst_cache[4][31:16] <= 16'hffff;
+                if (inst_cache[5][31:16] == wb_pc) inst_cache[5][31:16] <= 16'hffff;
+                if (inst_cache[6][31:16] == wb_pc) inst_cache[6][31:16] <= 16'hffff;
+            end
+
+    end
+
+end
 
 endmodule
